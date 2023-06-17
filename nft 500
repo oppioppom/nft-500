@@ -1,0 +1,23 @@
+pragma solidity ^0.8.0;
+
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract MyNFT is ERC721, Ownable {
+    uint256 public totalSupply;
+    string public baseURI;
+
+    constructor(string memory _name, string memory _symbol, string memory _baseURI) ERC721(_name, _symbol) {
+        baseURI = _baseURI;
+    }
+
+    function mint(address _to, uint256 _tokenId) external onlyOwner {
+        require(totalSupply < 5000, "Maximum supply reached");
+        _mint(_to, _tokenId);
+        totalSupply++;
+    }
+
+    function _baseURI() internal view override returns (string memory) {
+        return baseURI;
+    }
+}
